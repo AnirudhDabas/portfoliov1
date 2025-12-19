@@ -125,8 +125,22 @@ const About = () => {
     sr.reveal(revealContainer.current, srConfig());
   }, []);
 
-  const skills = ['JavaScript (ES6+)', 'TypeScript', 'React', 'Eleventy', 'Node.js', 'WordPress'];
-
+const skills = [
+  'Python',
+  'TypeScript',
+  'FastAPI',
+  'React',
+  'Next.js',
+  'Docker',
+  'MongoDB',
+  'Supabase',
+  'AWS',
+  'LLMs',
+  'Transformer-based models',
+  'Embeddings',
+  'NER pipelines',
+  'AI APIs',
+];
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
       <h2 className="numbered-heading">About Me</h2>
@@ -135,30 +149,34 @@ const About = () => {
         <StyledText>
           <div>
             <p>
-              Hello! My name is Brittany and I enjoy creating things that live on the internet. My
-              interest in web development started back in 2012 when I decided to try editing custom
-              Tumblr themes — turns out hacking together a custom reblog button taught me a lot
-              about HTML &amp; CSS!
-            </p>
+  Hello! My name is Anirudh and I enjoy building stuff that people actually want.
+  I'm a first year Computer Science student at the University of Waterloo.
+</p>
 
-            <p>
-              Fast-forward to today, and I’ve had the privilege of working at{' '}
-              <a href="https://us.mullenlowe.com/">an advertising agency</a>,{' '}
-              <a href="https://starry.com/">a start-up</a>,{' '}
-              <a href="https://www.apple.com/">a huge corporation</a>, and{' '}
-              <a href="https://scout.camd.northeastern.edu/">a student-led design studio</a>. My
-              main focus these days is building accessible, inclusive products and digital
-              experiences at <a href="https://upstatement.com/">Upstatement</a> for a variety of
-              clients.
-            </p>
+<p>
+  Most of my time goes into designing systems that ingest data, make decisions,
+  and operate without supervision. I care about reliability, throughput, and
+  removing human bottlenecks.
+</p>
+
+<p>
+  I’ve built and shipped products used in production. I’ve also built businesses
+  by automating the work instead of scaling teams.
+</p>
+
+           <p>
+  I’ve spent time building systems that process live signals, stay up under load,
+  and make decisions without supervision. Some of this work happened inside
+  companies. Some of it happened by building the company itself. Lately, my focus
+  is on software that quietly replaces human effort.
+</p>
 
             <p>
               I also recently{' '}
-              <a href="https://www.newline.co/courses/build-a-spotify-connected-app">
-                launched a course
+              <a href="https://www.anirro.com">
+                wrote a blog
               </a>{' '}
-              that covers everything you need to build a web app with the Spotify API using Node
-              &amp; React.
+              that covers everything you need to know about the hidden cost of adding an LLM.
             </p>
 
             <p>Here are a few technologies I’ve been working with recently:</p>

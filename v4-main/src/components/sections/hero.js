@@ -65,8 +65,7 @@ const Hero = () => {
   const four = (
     <>
       <p>
-        I'm a first year Computer Science student at the University of Waterloo. Currently, I’m focused on building Stoody.
-        at{' '}
+        First Year Computer Science Student @ University of Waterloo.{' '}
         <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
           Upstatement
         </a>
