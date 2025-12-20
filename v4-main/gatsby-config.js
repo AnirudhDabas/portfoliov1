@@ -2,10 +2,10 @@ const config = require('./src/config');
 
 module.exports = {
   siteMetadata: {
-    title: 'Brittany Chiang',
+    title: 'Anirudh Dabas',
     description:
-      'Brittany Chiang is a software engineer who specializes in building (and occasionally designing) exceptional digital experiences.',
-    siteUrl: 'https://brittanychiang.com', // No trailing slash allowed!
+      'First Year Computer Science student at the University of Waterloo focused on building systems that ingest data, make decisions, and operate without supervision.',
+    siteUrl: 'https://www.anirro.com', // No trailing slash allowed!
     image: '/og.png', // Path to your image you placed in the 'static' folder
     twitterUsername: '@bchiang7',
   },
@@ -19,9 +19,9 @@ module.exports = {
     `gatsby-plugin-robots-txt`,
     {
       resolve: `gatsby-plugin-manifest`,
-      options: {
-        name: 'Brittany Chiang',
-        short_name: 'Brittany Chiang',
+        options: {
+        name: 'Anirudh Dabas',
+        short_name: 'Anirudh Dabas',
         start_url: '/',
         background_color: config.colors.darkNavy,
         theme_color: config.colors.navy,
