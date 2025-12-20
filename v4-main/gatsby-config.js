@@ -7,7 +7,7 @@ module.exports = {
       'First Year Computer Science student at the University of Waterloo focused on building systems that ingest data, make decisions, and operate without supervision.',
     siteUrl: 'https://www.anirro.com', // No trailing slash allowed!
     image: '/og.png', // Path to your image you placed in the 'static' folder
-    twitterUsername: '@bchiang7',
+    twitterUsername: '@AnirudhDabas',
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

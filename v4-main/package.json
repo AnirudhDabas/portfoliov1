@@ -2,10 +2,10 @@
   "name": "v4",
   "description": "Personal Website V4",
   "version": "1.0.0",
-  "author": "Anirudh Dabas",
+  "author": "Anirudh Dabas <a2dabas@uwaterloo.ca>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bchiang7/v4"
+    "url": "https://github.com/AnirudhDabas/portfoliov1"
   },
   "keywords": [
     "gatsby"
