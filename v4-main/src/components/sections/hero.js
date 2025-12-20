@@ -69,6 +69,7 @@ const StyledHeroText = styled.div`
 `;
 
 const StyledHeroImage = styled.div`
+  position: relative;
   height: 100%;
   display: flex;
   align-items: flex-end;
@@ -81,7 +82,14 @@ const StyledHeroImage = styled.div`
     max-height: 100%;
     object-fit: cover;
     filter: grayscale(100%) contrast(1) brightness(85%);
-    transition: var(--transition);
+    transition:
+      transform 0.6s cubic-bezier(0.19, 1, 0.22, 1),
+      filter 0.4s ease;
+  }
+
+  &:hover .img {
+    transform: translateY(-10px) scale(1.02);
+    filter: none;
   }
 
   @media (max-width: 768px) {
