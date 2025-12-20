@@ -4,7 +4,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { Head, Loader, Nav, Social, Email, Footer } from '@components';
 import { GlobalStyle, theme } from '@styles';
 import Background from '@components/Background';
-import ElasticCursor from '@components/ElasticCursor';
+import { ElasticCursor } from '@components';
 
 const StyledContent = styled.div`
   display: flex;
