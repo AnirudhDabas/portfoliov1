@@ -1,133 +1,38 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { gsap } from 'gsap';
-
-const CURSOR_SIZE = 40;
-
-const CursorBlob = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: ${CURSOR_SIZE}px;
-  height: ${CURSOR_SIZE}px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  opacity: 1;
-
-  background: rgba(100, 255, 218, 0.12);
-  border: 1.5px solid rgba(100, 255, 218, 0.8);
-  mix-blend-mode: difference;
-  will-change: transform;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-/* ------------------ helpers ------------------ */
-
-function clamp(v, min, max) {
-  return Math.max(min, Math.min(max, v));
-}
-
-/* ------------------ component ------------------ */
+import React, { useEffect, useRef } from 'react';
 
 const ElasticCursor = () => {
-  const blobRef = useRef(null);
+  const ref = useRef(null);
 
-  const pos = useRef({ x: 0, y: 0 });
-  const vel = useRef({ x: 0, y: 0 });
-  const rotation = useRef(0);
-  const setters = useRef({});
-  const [enabled, setEnabled] = useState(false);
-
-  /* Enable only after mount (SSR-safe) */
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    document.body.style.cursor = 'none';
 
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    if (!isMobile) setEnabled(true);
+    const move = (e) => {
+      if (!ref.current) return;
+      ref.current.style.left = `${e.clientX}px`;
+      ref.current.style.top = `${e.clientY}px`;
+    };
 
-    pos.current.x = window.innerWidth / 2;
-    pos.current.y = window.innerHeight / 2;
+    window.addEventListener('mousemove', move);
+    return () => window.removeEventListener('mousemove', move);
   }, []);
 
-  /* GSAP setters */
-  useLayoutEffect(() => {
-    if (!blobRef.current) return;
-
-    setters.current = {
-      x: gsap.quickSetter(blobRef.current, 'x', 'px'),
-      y: gsap.quickSetter(blobRef.current, 'y', 'px'),
-      r: gsap.quickSetter(blobRef.current, 'rotate', 'deg'),
-      sx: gsap.quickSetter(blobRef.current, 'scaleX'),
-      sy: gsap.quickSetter(blobRef.current, 'scaleY'),
-    };
-  }, []);
-
-  /* Mouse tracking */
-  useEffect(() => {
-    if (!enabled) return;
-
-    const onMove = (e) => {
-      const { clientX: x, clientY: y } = e;
-
-      vel.current.x = x - pos.current.x;
-      vel.current.y = y - pos.current.y;
-
-      gsap.to(pos.current, {
-        x,
-        y,
-        duration: 0.6,
-        ease: 'expo.out',
-      });
-    };
-
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
-  }, [enabled]);
-
-  /* Animation ticker */
-  useEffect(() => {
-    if (!enabled) return;
-
-    const tick = () => {
-      const vx = vel.current.x;
-      const vy = vel.current.y;
-
-      const speed = Math.sqrt(vx * vx + vy * vy);
-      const cappedSpeed = Math.min(speed, 25);
-
-      /* Stretch */
-      const stretch = clamp(cappedSpeed / 60, 0, 0.22);
-      let scaleX = 1 + stretch;
-      let scaleY = 1 - stretch * 0.6;
-
-      if (speed < 0.5) {
-        scaleX = 1;
-        scaleY = 1;
-      }
-
-      /* Rotation (smoothed) */
-      const targetRot = (Math.atan2(vy, vx) * 180) / Math.PI;
-      rotation.current += (targetRot - rotation.current) * 0.15;
-
-      setters.current.x?.(pos.current.x);
-      setters.current.y?.(pos.current.y);
-      setters.current.r?.(rotation.current);
-      setters.current.sx?.(scaleX);
-      setters.current.sy?.(scaleY);
-    };
-
-    gsap.ticker.add(tick);
-    return () => gsap.ticker.remove(tick);
-  }, [enabled]);
-
-  if (!enabled) return null;
-
-  return <CursorBlob ref={blobRef} />;
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '20px',
+        height: '20px',
+        background: 'red',
+        borderRadius: '50%',
+        zIndex: 9999999999,
+        pointerEvents: 'none',
+        transform: 'translate(-50%, -50%)',
+      }}
+    />
+  );
 };
 
 export default ElasticCursor;

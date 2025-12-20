@@ -16,7 +16,7 @@ const Layout = ({ children, location }) => {
   const isHome = location.pathname === '/';
   const [isLoading, setIsLoading] = useState(isHome);
 
-  /* ✅ THIS IS THE IMPORTANT FIX */
+  /* ✅ CLIENT-ONLY FLAG (FIXES FIRST LOAD ISSUE) */
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -46,11 +46,14 @@ const Layout = ({ children, location }) => {
     }
 
     handleExternalLinks();
-  }, [isLoading]);
+  }, [isLoading, location]);
 
   return (
     <>
       <Head />
+
+      {/* ✅ CURSOR MUST LIVE OUTSIDE ROOT + THEME */}
+      {mounted && <ElasticCursor />}
 
       <div id="root">
         <ThemeProvider theme={theme}>
@@ -58,9 +61,6 @@ const Layout = ({ children, location }) => {
 
           {/* Background */}
           <Background />
-
-          {/* ✅ Elastic cursor — ONLY after client mount */}
-          {mounted && <ElasticCursor />}
 
           <a className="skip-to-content" href="#content">
             Skip to Content
