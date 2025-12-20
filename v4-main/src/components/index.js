@@ -14,4 +14,4 @@ export { default as Featured } from './sections/featured';
 export { default as Projects } from './sections/projects';
 export { default as Contact } from './sections/contact';
 // src/components/index.js
-export { default as ElasticCursor } from './elasticcursor-temp.js.js';
+export { default as ElasticCursor } from './ElasticCursor';
