@@ -16,6 +16,13 @@ const Layout = ({ children, location }) => {
   const isHome = location.pathname === '/';
   const [isLoading, setIsLoading] = useState(isHome);
 
+  /* ✅ THIS IS THE IMPORTANT FIX */
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleExternalLinks = () => {
     const allLinks = Array.from(document.querySelectorAll('a'));
     allLinks.forEach(link => {
@@ -49,12 +56,11 @@ const Layout = ({ children, location }) => {
         <ThemeProvider theme={theme}>
           <GlobalStyle />
 
-          {/* Background layer */}
+          {/* Background */}
           <Background />
 
-          {/* ✅ Elastic cursor (global, always mounted) */}
-          {typeof window !== 'undefined' && <ElasticCursor />}
-
+          {/* ✅ Elastic cursor — ONLY after client mount */}
+          {mounted && <ElasticCursor />}
 
           <a className="skip-to-content" href="#content">
             Skip to Content
