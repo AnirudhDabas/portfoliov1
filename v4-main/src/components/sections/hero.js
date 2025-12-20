@@ -20,10 +20,10 @@ const StyledHeroSection = styled.section`
 
 const StyledHeroInner = styled.div`
   width: 100%;
+  height: 100%;
   display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 40px;
-  align-items: center;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: stretch;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -66,10 +66,18 @@ const StyledHeroText = styled.div`
 
 const StyledHeroImage = styled.div`
   position: relative;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
 
   .img {
-    border-radius: 12px;
-    filter: grayscale(100%) contrast(1) brightness(90%);
+    height: 100%;
+    width: auto;
+    max-width: none;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1) brightness(85%);
     transition: var(--transition);
   }
 
@@ -87,8 +95,8 @@ const Hero = () => {
       heroImage: file(relativePath: { eq: "ani.png" }) {
         childImageSharp {
           gatsbyImageData(
-            width: 420
-            quality: 90
+            height: 900
+            quality: 95
             placeholder: BLURRED
             formats: [AUTO, WEBP, AVIF]
           )
