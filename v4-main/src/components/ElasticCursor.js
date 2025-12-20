@@ -2,57 +2,53 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 
-const CURSOR_SIZE = 48;
+const CURSOR_SIZE = 40;
 
 const CursorBlob = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 40px;
+  width: ${CURSOR_SIZE}px;
+  height: ${CURSOR_SIZE}px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  
-  background: rgba(100, 255, 218, 0.15); /* your green */
+  opacity: 0; /* fade in after first move */
+
+  background: rgba(100, 255, 218, 0.12);
   border: 1.5px solid rgba(100, 255, 218, 0.8);
   mix-blend-mode: difference;
+  will-change: transform;
 
   @media (max-width: 768px) {
     display: none;
   }
 `;
 
-function getScale(dx, dy) {
-  const dist = Math.sqrt(dx * dx + dy * dy);
-  return Math.min(dist / 600, 0.35);
+/* ------------------ helpers ------------------ */
+
+function clamp(v, min, max) {
+  return Math.max(min, Math.min(max, v));
 }
 
-function getAngle(dx, dy) {
-  return (Math.atan2(dy, dx) * 180) / Math.PI;
-}
-
-function getHoverRect(el) {
-  if (!el) return null;
-  if (el.classList?.contains('cursor-hover')) {
-    return el.getBoundingClientRect();
-  }
-  return el.closest?.('.cursor-hover')?.getBoundingClientRect() || null;
-}
+/* ------------------ component ------------------ */
 
 const ElasticCursor = () => {
   const blobRef = useRef(null);
 
-  // 🚨 SSR-safe refs (NO window usage here)
   const pos = useRef({ x: 0, y: 0 });
   const vel = useRef({ x: 0, y: 0 });
+  const rotation = useRef(0);
   const setters = useRef({});
-  const [enabled, setEnabled] = useState(true);
+  const [enabled, setEnabled] = useState(false);
 
-  /* Initialize cursor position AFTER mount */
+  /* ✅ Enable cursor AFTER mount (fixes first-load invisibility) */
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    if (!isMobile) setEnabled(true);
 
     pos.current.x = window.innerWidth / 2;
     pos.current.y = window.innerHeight / 2;
@@ -60,7 +56,6 @@ const ElasticCursor = () => {
 
   /* GSAP setters */
   useLayoutEffect(() => {
-    if (typeof window === 'undefined') return;
     if (!blobRef.current) return;
 
     setters.current = {
@@ -69,18 +64,13 @@ const ElasticCursor = () => {
       r: gsap.quickSetter(blobRef.current, 'rotate', 'deg'),
       sx: gsap.quickSetter(blobRef.current, 'scaleX'),
       sy: gsap.quickSetter(blobRef.current, 'scaleY'),
+      o: gsap.quickSetter(blobRef.current, 'opacity'),
     };
   }, []);
 
   /* Mouse tracking */
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    if (isMobile) {
-      setEnabled(false);
-      return;
-    }
+    if (!enabled) return;
 
     const onMove = (e) => {
       const { clientX: x, clientY: y } = e;
@@ -88,54 +78,55 @@ const ElasticCursor = () => {
       const dx = x - pos.current.x;
       const dy = y - pos.current.y;
 
-      vel.current.x = dx * 1.2;
-      vel.current.y = dy * 1.2;
+      vel.current.x = dx;
+      vel.current.y = dy;
 
       gsap.to(pos.current, {
         x,
         y,
-        duration: 1.2,
-        ease: 'elastic.out(1, 0.45)',
+        duration: 0.6,
+        ease: 'expo.out',
       });
 
-      const hoverRect = getHoverRect(e.target);
-
-      if (hoverRect && blobRef.current) {
-        gsap.to(blobRef.current, {
-          width: hoverRect.width + 16,
-          height: hoverRect.height + 16,
-          borderRadius: 10,
-          duration: 0.8,
-          ease: 'elastic.out(1, 0.35)',
-        });
-      } else if (blobRef.current) {
-        gsap.to(blobRef.current, {
-          width: CURSOR_SIZE,
-          height: CURSOR_SIZE,
-          borderRadius: CURSOR_SIZE,
-          duration: 0.6,
-          ease: 'elastic.out(1, 0.4)',
-        });
-      }
+      setters.current.o?.(1); // fade in on first movement
     };
 
     window.addEventListener('mousemove', onMove);
     return () => window.removeEventListener('mousemove', onMove);
-  }, []);
+  }, [enabled]);
 
   /* Animation ticker */
   useEffect(() => {
     if (!enabled) return;
 
     const tick = () => {
-      const s = getScale(vel.current.x, vel.current.y);
-      const r = getAngle(vel.current.x, vel.current.y);
+      const vx = vel.current.x;
+      const vy = vel.current.y;
+
+      const speed = Math.sqrt(vx * vx + vy * vy);
+      const cappedSpeed = Math.min(speed, 25);
+
+      /* ---- stretch (CLAMPED) ---- */
+      const stretch = clamp(cappedSpeed / 60, 0, 0.25);
+
+      let scaleX = 1 + stretch;
+      let scaleY = 1 - stretch * 0.6;
+
+      /* ---- snap back when slow ---- */
+      if (speed < 0.5) {
+        scaleX = 1;
+        scaleY = 1;
+      }
+
+      /* ---- rotation (LERPED) ---- */
+      const targetRot = (Math.atan2(vy, vx) * 180) / Math.PI;
+      rotation.current += (targetRot - rotation.current) * 0.15;
 
       setters.current.x?.(pos.current.x);
       setters.current.y?.(pos.current.y);
-      setters.current.r?.(r);
-      setters.current.sx?.(1 + s);
-      setters.current.sy?.(1 - s * 1.5);
+      setters.current.r?.(rotation.current);
+      setters.current.sx?.(scaleX);
+      setters.current.sy?.(scaleY);
     };
 
     gsap.ticker.add(tick);
