@@ -1,6 +1,8 @@
 ---
 date: '2024-07-01'
 title: 'FeedFilterAI'
+cover: './demo.png'
+
 github: 'https://github.com/AnirudhDabas/FeedFilterAI'
 external: ''
 tech:
