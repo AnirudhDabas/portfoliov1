@@ -18,7 +18,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    transform: none !important;
     margin: 0;
     width: 100%;
     min-height: 100%;

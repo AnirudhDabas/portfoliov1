@@ -6,20 +6,18 @@ const CURSOR_SIZE = 48;
 
 const CursorBlob = styled.div`
   position: fixed;
-  left: 0;
   top: 0;
-  width: ${CURSOR_SIZE}px;
-  height: ${CURSOR_SIZE}px;
-  border-radius: 999px;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  will-change: transform, width, height;
-
-  /* 🔴 VISIBILITY (critical) */
-  background: rgba(255, 0, 0, 0.15);
-  border: 3px solid red;
-  backdrop-filter: invert(100%);
+  
+  background: rgba(100, 255, 218, 0.15); /* your green */
+  border: 1.5px solid rgba(100, 255, 218, 0.8);
+  mix-blend-mode: difference;
 
   @media (max-width: 768px) {
     display: none;
