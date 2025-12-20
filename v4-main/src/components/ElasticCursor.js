@@ -13,10 +13,13 @@ const CursorBlob = styled.div`
   border-radius: 999px;
   pointer-events: none;
   z-index: 9999;
-  will-change: transform, width, height;
   transform: translate(-50%, -50%);
+  will-change: transform, width, height;
+
+  /* 🔴 VISIBILITY (critical) */
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.9);
   backdrop-filter: invert(100%);
-  border: 2px solid rgba(255, 255, 255, 0.8);
 
   @media (max-width: 768px) {
     display: none;
@@ -34,18 +37,32 @@ function getAngle(dx, dy) {
 
 function getHoverRect(el) {
   if (!el) return null;
-  if (el.classList?.contains('cursor-hover')) return el.getBoundingClientRect();
+  if (el.classList?.contains('cursor-hover')) {
+    return el.getBoundingClientRect();
+  }
   return el.closest?.('.cursor-hover')?.getBoundingClientRect() || null;
 }
 
 const ElasticCursor = () => {
   const blobRef = useRef(null);
-  const pos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+
+  // 🚨 SSR-safe refs (NO window usage here)
+  const pos = useRef({ x: 0, y: 0 });
   const vel = useRef({ x: 0, y: 0 });
   const setters = useRef({});
   const [enabled, setEnabled] = useState(true);
 
+  /* Initialize cursor position AFTER mount */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    pos.current.x = window.innerWidth / 2;
+    pos.current.y = window.innerHeight / 2;
+  }, []);
+
+  /* GSAP setters */
   useLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
     if (!blobRef.current) return;
 
     setters.current = {
@@ -54,13 +71,13 @@ const ElasticCursor = () => {
       r: gsap.quickSetter(blobRef.current, 'rotate', 'deg'),
       sx: gsap.quickSetter(blobRef.current, 'scaleX'),
       sy: gsap.quickSetter(blobRef.current, 'scaleY'),
-      w: gsap.quickSetter(blobRef.current, 'width', 'px'),
-      h: gsap.quickSetter(blobRef.current, 'height', 'px'),
-      br: gsap.quickSetter(blobRef.current, 'borderRadius', 'px'),
     };
   }, []);
 
+  /* Mouse tracking */
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
     if (isMobile) {
       setEnabled(false);
@@ -69,6 +86,7 @@ const ElasticCursor = () => {
 
     const onMove = (e) => {
       const { clientX: x, clientY: y } = e;
+
       const dx = x - pos.current.x;
       const dy = y - pos.current.y;
 
@@ -107,6 +125,7 @@ const ElasticCursor = () => {
     return () => window.removeEventListener('mousemove', onMove);
   }, []);
 
+  /* Animation ticker */
   useEffect(() => {
     if (!enabled) return;
 
