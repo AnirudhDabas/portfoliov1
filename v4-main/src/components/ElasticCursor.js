@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 
-const SIZE = 16;
+const SIZE = 19;
 
 const Cursor = styled.div`
   position: fixed;
