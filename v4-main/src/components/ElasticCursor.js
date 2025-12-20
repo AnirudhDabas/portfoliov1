@@ -17,8 +17,8 @@ const CursorBlob = styled.div`
   will-change: transform, width, height;
 
   /* 🔴 VISIBILITY (critical) */
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 0, 0, 0.15);
+  border: 3px solid red;
   backdrop-filter: invert(100%);
 
   @media (max-width: 768px) {
