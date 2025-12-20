@@ -3,10 +3,17 @@ import fonts from './fonts';
 import variables from './variables';
 import TransitionStyles from './TransitionStyles';
 import PrismStyles from './PrismStyles';
+ 
 
 const GlobalStyle = createGlobalStyle`
   ${fonts};
   ${variables};
+  
+  html,
+body {
+  cursor: none;
+}
+
 
   html {
     box-sizing: border-box;
@@ -74,11 +81,12 @@ const GlobalStyle = createGlobalStyle`
   overflow-x: hidden;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  background-color: var(--bg-dark);
+  background-color: var(--navy);
   color: var(--slate);
   font-family: mundial, sans-serif;
   font-size: var(--fz-xl);
   line-height: 1.3;
+  cursor: none;
 
   @media (max-width: 480px) {
     font-size: var(--fz-lg);
@@ -259,11 +267,14 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
     position: relative;
     transition: var(--transition);
-
-    &:hover,
-    &:focus {
-      color: var(--green);
-    }
+  a { 
+  a,
+a:hover,
+a:focus,
+a:active {
+  cursor: none;
+}
+    
 
     &.inline-link {
       ${({ theme }) => theme.mixins.inlineLink};
@@ -271,7 +282,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   button {
-    cursor: pointer;
+    cursor: none;
     border: 0;
     border-radius: 0;
   }
@@ -279,6 +290,7 @@ const GlobalStyle = createGlobalStyle`
   input, textarea {
     border-radius: 0;
     outline: 0;
+    cursor: none;
 
     &:focus {
       outline: 0;
