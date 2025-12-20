@@ -53,7 +53,8 @@ const Layout = ({ children, location }) => {
           <Background />
 
           {/* ✅ Elastic cursor (global, always mounted) */}
-          <ElasticCursor />
+          {typeof window !== 'undefined' && <ElasticCursor />}
+
 
           <a className="skip-to-content" href="#content">
             Skip to Content
