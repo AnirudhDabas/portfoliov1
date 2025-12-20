@@ -8,24 +8,28 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 const StyledHeroSection = styled.section`
   ${({ theme }) => theme.mixins.flexCenter};
+  flex-direction: column;
+  align-items: flex-start;
   min-height: 100vh;
   height: 100vh;
-  padding: 0;
+  padding-top: var(--nav-height);
+  padding-left: 0;
+  padding-right: 0;
 
   @media (max-height: 700px) and (min-width: 700px), (max-width: 360px) {
     height: auto;
-    padding-top: var(--nav-height);
   }
 `;
 
 const StyledHeroInner = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - var(--nav-height));
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  align-items: stretch;
+  align-items: center;
 
   @media (max-width: 768px) {
+    height: auto;
     grid-template-columns: 1fr;
   }
 `;
@@ -65,7 +69,6 @@ const StyledHeroText = styled.div`
 `;
 
 const StyledHeroImage = styled.div`
-  position: relative;
   height: 100%;
   display: flex;
   align-items: flex-end;
@@ -75,7 +78,7 @@ const StyledHeroImage = styled.div`
   .img {
     height: 100%;
     width: auto;
-    max-width: none;
+    max-height: 100%;
     object-fit: cover;
     filter: grayscale(100%) contrast(1) brightness(85%);
     transition: var(--transition);
@@ -108,48 +111,37 @@ const Hero = () => {
   const image = getImage(data.heroImage);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
-    }
-
+    if (prefersReducedMotion) return;
     const timeout = setTimeout(() => setIsMounted(true), navDelay);
     return () => clearTimeout(timeout);
   }, []);
 
-  const one = <h1>Hi, my name is</h1>;
-  const two = <h2 className="big-heading">Anirudh Dabas.</h2>;
-  const three = <h3 className="big-heading">I build things.</h3>;
-  const four = (
+  const items = [
+    <h1>Hi, my name is</h1>,
+    <h2 className="big-heading">Anirudh Dabas.</h2>,
+    <h3 className="big-heading">I build things.</h3>,
     <p>
       First Year Computer Science Student @ University of Waterloo.{' '}
       <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
         Upstatement
       </a>
       .
-    </p>
-  );
-  const five = (
+    </p>,
     <a
       className="email-link"
       href="https://www.newline.co/courses/build-a-spotify-connected-app"
       target="_blank"
       rel="noreferrer">
       Check out Stoody!
-    </a>
-  );
-
-  const items = [one, two, three, four, five];
+    </a>,
+  ];
 
   return (
     <StyledHeroSection>
       <StyledHeroInner>
         <StyledHeroText>
           {prefersReducedMotion ? (
-            <>
-              {items.map((item, i) => (
-                <div key={i}>{item}</div>
-              ))}
-            </>
+            items.map((item, i) => <div key={i}>{item}</div>)
           ) : (
             <TransitionGroup component={null}>
               {isMounted &&
