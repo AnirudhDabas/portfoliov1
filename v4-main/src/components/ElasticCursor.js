@@ -14,7 +14,7 @@ const CursorBlob = styled.div`
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  opacity: 0; /* fade in after first move */
+  opacity: 1;
 
   background: rgba(100, 255, 218, 0.12);
   border: 1.5px solid rgba(100, 255, 218, 0.8);
@@ -43,7 +43,7 @@ const ElasticCursor = () => {
   const setters = useRef({});
   const [enabled, setEnabled] = useState(false);
 
-  /* ✅ Enable cursor AFTER mount (fixes first-load invisibility) */
+  /* Enable only after mount (SSR-safe) */
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -64,7 +64,6 @@ const ElasticCursor = () => {
       r: gsap.quickSetter(blobRef.current, 'rotate', 'deg'),
       sx: gsap.quickSetter(blobRef.current, 'scaleX'),
       sy: gsap.quickSetter(blobRef.current, 'scaleY'),
-      o: gsap.quickSetter(blobRef.current, 'opacity'),
     };
   }, []);
 
@@ -75,11 +74,8 @@ const ElasticCursor = () => {
     const onMove = (e) => {
       const { clientX: x, clientY: y } = e;
 
-      const dx = x - pos.current.x;
-      const dy = y - pos.current.y;
-
-      vel.current.x = dx;
-      vel.current.y = dy;
+      vel.current.x = x - pos.current.x;
+      vel.current.y = y - pos.current.y;
 
       gsap.to(pos.current, {
         x,
@@ -87,8 +83,6 @@ const ElasticCursor = () => {
         duration: 0.6,
         ease: 'expo.out',
       });
-
-      setters.current.o?.(1); // fade in on first movement
     };
 
     window.addEventListener('mousemove', onMove);
@@ -106,19 +100,17 @@ const ElasticCursor = () => {
       const speed = Math.sqrt(vx * vx + vy * vy);
       const cappedSpeed = Math.min(speed, 25);
 
-      /* ---- stretch (CLAMPED) ---- */
-      const stretch = clamp(cappedSpeed / 60, 0, 0.25);
-
+      /* Stretch */
+      const stretch = clamp(cappedSpeed / 60, 0, 0.22);
       let scaleX = 1 + stretch;
       let scaleY = 1 - stretch * 0.6;
 
-      /* ---- snap back when slow ---- */
       if (speed < 0.5) {
         scaleX = 1;
         scaleY = 1;
       }
 
-      /* ---- rotation (LERPED) ---- */
+      /* Rotation (smoothed) */
       const targetRot = (Math.atan2(vy, vx) * 180) / Math.PI;
       rotation.current += (targetRot - rotation.current) * 0.15;
 
