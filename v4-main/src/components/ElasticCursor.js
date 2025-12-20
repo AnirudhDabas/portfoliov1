@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { gsap } from 'gsap';
 
-const SIZE = 24;
+const SIZE = 16;
 
 const Cursor = styled.div`
   position: fixed;
@@ -16,8 +16,8 @@ const Cursor = styled.div`
   transform: translate(-50%, -50%);
 
   /* ✅ FORCE VISIBILITY */
-  background: rgba(100, 255, 218, 0.15);
-  border: 2px solid rgba(100, 255, 218, 1);
+  background: rgba(100, 255, 218, 0.12);
+border: 1px solid rgba(100, 255, 218, 1);
 
   /* ❌ REMOVE blend mode (THIS WAS KILLING IT) */
   /* mix-blend-mode: difference; */
