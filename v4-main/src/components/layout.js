@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
 import { Head, Loader, Nav, Social, Email, Footer } from '@components';
 import { GlobalStyle, theme } from '@styles';
+import Background from '@components/Background';
 
 const StyledContent = styled.div`
   display: flex;
@@ -46,41 +47,39 @@ const Layout = ({ children, location }) => {
     handleExternalLinks();
   }, [isLoading]);
 
-  return (
-    <>
-      <Head />
+ return (
+  <>
+    <Head />
 
-      <div id="root">
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
+    <div id="root">
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
 
-          <a className="skip-to-content" href="#content">
-            Skip to Content
-          </a>
+        {/* 🔥 Background must live here */}
+        <Background />
 
-          {isLoading && isHome ? (
-            <Loader finishLoading={() => setIsLoading(false)} />
-          ) : (
-            <StyledContent>
-              <Nav isHome={isHome} />
-              <Social isHome={isHome} />
-              <Email isHome={isHome} />
+        <a className="skip-to-content" href="#content">
+          Skip to Content
+        </a>
 
-              <div id="content">
-                {children}
-                <Footer />
-              </div>
-            </StyledContent>
-          )}
-        </ThemeProvider>
-      </div>
-    </>
-  );
+        {isLoading && isHome ? (
+          <Loader finishLoading={() => setIsLoading(false)} />
+        ) : (
+          <StyledContent>
+            <Nav isHome={isHome} />
+            <Social isHome={isHome} />
+            <Email isHome={isHome} />
+
+            <div id="content">
+              {children}
+              <Footer />
+            </div>
+          </StyledContent>
+        )}
+      </ThemeProvider>
+    </div>
+  </>
+);
+
 };
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-  location: PropTypes.object.isRequired,
-};
-
 export default Layout;
