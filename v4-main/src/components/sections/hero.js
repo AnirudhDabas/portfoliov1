@@ -3,11 +3,11 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { navDelay, loaderDelay } from '@utils';
 import { usePrefersReducedMotion } from '@hooks';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { graphql, useStaticQuery } from 'gatsby';
 
 const StyledHeroSection = styled.section`
   ${({ theme }) => theme.mixins.flexCenter};
-  flex-direction: column;
-  align-items: flex-start;
   min-height: 100vh;
   height: 100vh;
   padding: 0;
@@ -16,6 +16,24 @@ const StyledHeroSection = styled.section`
     height: auto;
     padding-top: var(--nav-height);
   }
+`;
+
+const StyledHeroInner = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 40px;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const StyledHeroText = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
   h1 {
     margin: 0 0 30px 4px;
@@ -46,9 +64,40 @@ const StyledHeroSection = styled.section`
   }
 `;
 
+const StyledHeroImage = styled.div`
+  position: relative;
+
+  .img {
+    border-radius: 12px;
+    filter: grayscale(100%) contrast(1) brightness(90%);
+    transition: var(--transition);
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const Hero = () => {
   const [isMounted, setIsMounted] = useState(false);
   const prefersReducedMotion = usePrefersReducedMotion();
+
+  const data = useStaticQuery(graphql`
+    query {
+      heroImage: file(relativePath: { eq: "ani.png" }) {
+        childImageSharp {
+          gatsbyImageData(
+            width: 420
+            quality: 90
+            placeholder: BLURRED
+            formats: [AUTO, WEBP, AVIF]
+          )
+        }
+      }
+    }
+  `);
+
+  const image = getImage(data.heroImage);
 
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -63,15 +112,13 @@ const Hero = () => {
   const two = <h2 className="big-heading">Anirudh Dabas.</h2>;
   const three = <h3 className="big-heading">I build things.</h3>;
   const four = (
-    <>
-      <p>
-        First Year Computer Science Student @ University of Waterloo.{' '}
-        <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
-          Upstatement
-        </a>
-        .
-      </p>
-    </>
+    <p>
+      First Year Computer Science Student @ University of Waterloo.{' '}
+      <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
+        Upstatement
+      </a>
+      .
+    </p>
   );
   const five = (
     <a
@@ -87,22 +134,30 @@ const Hero = () => {
 
   return (
     <StyledHeroSection>
-      {prefersReducedMotion ? (
-        <>
-          {items.map((item, i) => (
-            <div key={i}>{item}</div>
-          ))}
-        </>
-      ) : (
-        <TransitionGroup component={null}>
-          {isMounted &&
-            items.map((item, i) => (
-              <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
-                <div style={{ transitionDelay: `${i + 1}00ms` }}>{item}</div>
-              </CSSTransition>
-            ))}
-        </TransitionGroup>
-      )}
+      <StyledHeroInner>
+        <StyledHeroText>
+          {prefersReducedMotion ? (
+            <>
+              {items.map((item, i) => (
+                <div key={i}>{item}</div>
+              ))}
+            </>
+          ) : (
+            <TransitionGroup component={null}>
+              {isMounted &&
+                items.map((item, i) => (
+                  <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
+                    <div style={{ transitionDelay: `${i + 1}00ms` }}>{item}</div>
+                  </CSSTransition>
+                ))}
+            </TransitionGroup>
+          )}
+        </StyledHeroText>
+
+        <StyledHeroImage>
+          <GatsbyImage image={image} alt="Anirudh Dabas" className="img" />
+        </StyledHeroImage>
+      </StyledHeroInner>
     </StyledHeroSection>
   );
 };
