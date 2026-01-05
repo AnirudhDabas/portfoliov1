@@ -2,6 +2,7 @@
 date: '2024-07-01'
 title: 'FeedFilterAI'
 cover: './demo.png'
+cta: 'https://feedfilterai.vercel.app/'
 
 github: 'https://feedfilterai.vercel.app/'
 external: 'https://feedfilterai.vercel.app/'
