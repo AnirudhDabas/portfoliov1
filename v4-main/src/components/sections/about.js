@@ -173,7 +173,7 @@ const skills = [
 
             <p>
               I also recently{' '}
-              <a href="https://www.anirro.com">
+              <a href="https://medium.com/@anirudhdabas_72519/everything-you-need-to-know-about-the-hidden-cost-of-adding-an-llm-6a0481671fd4">
                 wrote a blog
               </a>{' '}
               that covers everything you need to know about the hidden cost of adding an LLM.
