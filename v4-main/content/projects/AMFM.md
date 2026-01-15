@@ -1,14 +1,16 @@
 ---
-date: '2017-11-01'
-title: 'Apple Music Facebook Messenger Integration'
+date: '2024-06-01'
+title: 'Viberotech — Vibrotactile Music Prototype'
 github: ''
-external: 'https://www.theverge.com/2017/10/5/16433770/facebook-messenger-apple-music-bot-song-streaming'
+external: ''
 tech:
-  - Ember
-  - JS
-  - SCSS
-company: 'Apple'
+  - Vibrotactile Hardware
+  - Signal Processing
+  - Frequency Modulation
+  - Interactive Prototyping
+company: 'Viberotech'
 showInProjects: true
 ---
-
-Facebook Messenger chat bot extension featuring authentication and full song streaming from within the Messenger app. Read more about it on [The Verge](https://www.theverge.com/2017/10/5/16433770/facebook-messenger-apple-music-bot-song-streaming).
+An accessibility-focused music experience that translates audio into vibrotactile feedback, enabling d/Deaf and hard-of-hearing users to experience music through touch.
+The prototype demonstrates controlled frequency sweeps, burst rattle tests, and track-level vibrotactile mapping using moderate-cost hardware.
+Designed and built by Anirudh Dabas, with an emphasis on open access, community participation, and inclusive design.
