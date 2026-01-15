@@ -2,7 +2,7 @@
 date: '2019-11-12'
 title: 'Personal Portfolio Website'
 github: 'https://github.com/AnirudhDabas'
-external: ''
+external: 'https://anirro.com'
 tech:
   - Gatsby
   - React
