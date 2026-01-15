@@ -130,14 +130,11 @@ const Hero = () => {
     <h3 className="big-heading">I build things.</h3>,
     <p>
       First Year Computer Science Student @ University of Waterloo.{' '}
-      <a href="https://upstatement.com/" target="_blank" rel="noreferrer">
-        Upstatement
-      </a>
-      .
+
     </p>,
     <a
       className="email-link"
-      href="https://www.newline.co/courses/build-a-spotify-connected-app"
+      href="https://www.getstoody.com"
       target="_blank"
       rel="noreferrer">
       Check out Stoody!
