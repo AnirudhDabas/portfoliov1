@@ -1,12 +1,14 @@
 ---
 date: '2018-12-29'
-title: 'Google Keep Clone'
+title: 'Distributed Job Queue & Worker System'
 github: 'https://github.com/AnirudhDabas'
-external: 'https://keep-vue.netlify.com/'
+external: ''
 tech:
-  - Vue
-  - Firebase
+  - Node.js
+  - Redis
+  - Background Workers
+  - Fault Tolerance
 showInProjects: true
 ---
-
-A simple Google Keep clone built with Vue and Firebase.
+A distributed background job processing system that executes asynchronous tasks with retry logic, failure isolation, and idempotent execution.
+Designed to handle task scheduling, worker coordination, and graceful recovery from transient failures.

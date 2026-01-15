@@ -1,13 +1,15 @@
 ---
-date: '2019-07-15'
-title: 'OctoProfile'
-github: 'https://github.com/AnirudhDabas'
-external: 'https://octoprofile.now.sh'
+date: '2023-10-15'
+title: 'Reimagine Relief'
+github: ''
+external: 'https://www.instagram.com/reimagine_relief/'
 tech:
-  - Next.js
-  - Chart.js
-  - GitHub API
+  - React
+  - Node.js
+  - Event-Driven Architecture
+  - Offline-First Systems
+  - Privacy-Preserving Analytics
 showInProjects: true
 ---
-
-A nicer look at your GitHub profile and repo stats. Includes data visualizations of your top languages, starred repositories, and sort through your top repos by number of stars, forks, and size.
+Co-founded a disaster-relief initiative and led the design and development of an offline-first, event-driven analytics platform to track and aggregate aid distribution under unreliable network conditions.
+Built systems to ensure data correctness and privacy while generating real-time dashboards and verified impact summaries for donors, partners, and the public.

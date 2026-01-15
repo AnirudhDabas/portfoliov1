@@ -1,15 +1,15 @@
 ---
 date: '2019-11-12'
-title: 'Building a Headless Mobile App CMS From Scratch'
-github: ''
-external: 'https://medium.com/stories-from-upstatement/building-a-headless-mobile-app-cms-from-scratch-bab2d17744d9'
+title: 'Personal Portfolio Website'
+github: 'https://github.com/AnirudhDabas'
+external: ''
 tech:
-  - Node
-  - Express
-  - Firebase
-  - Vue
-company: 'Upstatement'
+  - Gatsby
+  - React
+  - JavaScript
+  - SCSS
+company: 'Personal Project'
 showInProjects: true
 ---
-
-Find out how we built a custom headless CMS with Node, Express, and Firebase for a project at Upstatement
+Designed and built a personal portfolio website from scratch to showcase projects, experience, and writing.
+Implemented a static site architecture using Gatsby and React, with custom styling, responsive layouts, and content-driven pages optimized for performance and maintainability. 
